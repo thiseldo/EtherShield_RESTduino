@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <link type="text/css" href="jquery-ui-1/css/blitzer/jquery-ui-1.8.11.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="jquery-ui-1/js/jquery-1.5.1.min.js"></script>
+		<script type="text/javascript" src="jquery-ui-1/js/jquery-ui-1.8.11.custom.min.js"></script>
+        <meta charset="utf-8">
+	<style>
+	#red, #green, #blue {
+		float: left;
+		clear: left;
+		width: 300px;
+		margin: 15px;
+	}
+	#swatch {
+		width: 120px;
+		height: 100px;
+		margin-top: 18px;
+		margin-left: 350px;
+		background-image: none;
+	}
+	#red .ui-slider-range { background: #ef2929; }
+	#red .ui-slider-handle { border-color: #ef2929; }
+	#green .ui-slider-range { background: #8ae234; }
+	#green .ui-slider-handle { border-color: #8ae234; }
+	#blue .ui-slider-range { background: #729fcf; }
+	#blue .ui-slider-handle { border-color: #729fcf; }
+	#demo-frame > div.demo { padding: 10px !important; };
+	</style>
+	
+        <script>
+	    // Set the rest url here for your arduino
+	    var resturl = "http://192.168.1.177/";
+	    function hexFromRGB(r, g, b) {
+		var hex = [
+			r.toString( 16 ),
+			g.toString( 16 ),
+			b.toString( 16 )
+		];
+		$.each( hex, function( nr, val ) {
+			if ( val.length === 1 ) {
+				hex[ nr ] = "0" + val;
+			}
+		});
+		return hex.join( "" ).toUpperCase();
+	    }
+	    function refreshSwatchR() {
+		var red = $( "#red" ).slider( "value" ),
+			green = $( "#green" ).slider( "value" ),
+			blue = $( "#blue" ).slider( "value" ),
+			hex = hexFromRGB( red, green, blue );
+		$( "#swatch" ).css( "background-color", "#" + hex );
+                //  make an AJAX call to the Arduino
+                $.get(resturl + "5/" + red, function(data) {
+                });
+	    }
+	    function refreshSwatchG() {
+		var red = $( "#red" ).slider( "value" ),
+			green = $( "#green" ).slider( "value" ),
+			blue = $( "#blue" ).slider( "value" ),
+			hex = hexFromRGB( red, green, blue );
+		$( "#swatch" ).css( "background-color", "#" + hex );
+                //  make an AJAX call to the Arduino
+                $.get(resturl + "6/" + green, function(data) {
+                });
+	    }
+	    function refreshSwatchB() {
+		var red = $( "#red" ).slider( "value" ),
+			green = $( "#green" ).slider( "value" ),
+			blue = $( "#blue" ).slider( "value" ),
+			hex = hexFromRGB( red, green, blue );
+		$( "#swatch" ).css( "background-color", "#" + hex );
+                //  make an AJAX call to the Arduino
+                $.get(resturl + "3/" + blue, function(data) {
+                });
+	    }
+	    $(function() {
+		$( "#red" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			max: 255,
+			value: 127,
+			slide: refreshSwatchR,
+			change: refreshSwatchR
+		});
+		$( "#green" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			max: 255,
+			value: 127,
+			slide: refreshSwatchG,
+			change: refreshSwatchG
+		});
+		$( "#blue" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			max: 255,
+			value: 127,
+			slide: refreshSwatchB,
+			change: refreshSwatchB
+		});
+		$( "#red" ).slider( "value", 0 );
+		$( "#green" ).slider( "value", 0 );
+		$( "#blue" ).slider( "value", 0 );
+	    });
+	      
+        </script>
+    </head>
+    <body>
+
+<div class="demo">
+
+<p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
+	<span class="ui-icon ui-icon-pencil" style="float:left; margin:-2px 5px 0 0;"></span>
+	Arduino/Nanode ENC28J60 Ethershield based REST Colorpicker
+</p>
+
+<div id="red"></div>
+<div id="green"></div>
+<div id="blue"></div>
+
+<div id="swatch" class="ui-widget-content ui-corner-all"></div>
+
+</div><!-- End demo -->
+        
+    </body>
+</html>
+
